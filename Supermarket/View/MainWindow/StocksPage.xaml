@@ -1,0 +1,78 @@
+﻿<Page x:Class="Supermarket.View.MainWindow.StocksPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Supermarket.View.MainWindow"
+	  xmlns:context="clr-namespace:Supermarket.ViewModel.MainWindowVMs"
+	  xmlns:converters="clr-namespace:Supermarket.ViewModel.Converters"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UsersPage">
+
+	<Page.DataContext>
+		<context:StocksPageVM/>
+	</Page.DataContext>
+
+	<Page.Resources>
+		<converters:PriceCalculator x:Key="PriceCalculator"/>
+	</Page.Resources>
+
+	<ScrollViewer>
+		<DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="200"/>
+				</Grid.RowDefinitions>
+
+				<WrapPanel Grid.Row="0" HorizontalAlignment="Left">
+					<Button Content="Add" Command="{Binding AddCommand}" Style="{StaticResource DefaultButtonStyle}"/>
+					<Button Content="Edit" Command="{Binding EditCommand}" Style="{StaticResource DefaultButtonStyle}"/>
+					<Button Content="Delete" Command="{Binding DeleteCommand}" Style="{StaticResource DefaultButtonStyle}"/>
+				</WrapPanel>
+
+				<WrapPanel Grid.Row="1" HorizontalAlignment="Left">
+					<StackPanel HorizontalAlignment="Left">
+						<TextBlock Text="ID: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Product name: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Initial quantity: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Quantity: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Unit: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Supply date: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Expiration date: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Purchase price: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+						<TextBlock Text="Selling price: " Style="{StaticResource DefaultTextBlockStyle}" HorizontalAlignment="Left"/>
+					</StackPanel>
+
+					<StackPanel x:Name="TextBlockPanel" HorizontalAlignment="Left">
+						<TextBox Text="{Binding SelectedStockCopy.ID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+						<TextBox Text="{Binding SelectedStockCopy.Product.Name ,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+						<TextBox Text="{Binding SelectedStockCopy.InitialQuantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+						<TextBox Text="{Binding SelectedStockCopy.Quantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+						<TextBox Text="{Binding SelectedStockCopy.Unit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+						<DatePicker SelectedDate="{Binding SelectedStockCopy.SupplyDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultDatePickerStyle}"/>
+						<DatePicker SelectedDate="{Binding SelectedStockCopy.ExpirationDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultDatePickerStyle}"/>
+						<TextBox Text="{Binding PurchasePriceString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+						<TextBox Text="{Binding SellingPriceString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource DefaultTextBoxStyle}"/>
+					</StackPanel>
+				</WrapPanel>
+
+				<DataGrid Grid.Row="2" ItemsSource="{Binding Stocks, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedStock}" Style="{StaticResource DefaultDataGridStyle}">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+						<DataGridTextColumn Header="Product name" Binding="{Binding Product.Name}"/>
+						<DataGridTextColumn Header="Initial quantity" Binding="{Binding InitialQuantity}"/>
+						<DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
+						<DataGridTextColumn Header="Unit" Binding="{Binding Unit}"/>
+						<DataGridTextColumn Header="Supply date" Binding="{Binding SupplyDate, StringFormat={}{0:dd/MM/yyyy}}"/>
+						<DataGridTextColumn Header="Expiration date" Binding="{Binding ExpirationDate, StringFormat={}{0:dd/MM/yyyy}}"/>
+						<DataGridTextColumn Header="Purchase price" Binding="{Binding PurchasePrice}"/>
+						<DataGridTextColumn Header="Selling price" Binding="{Binding SellingPrice}"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</Grid>
+		</DockPanel>
+	</ScrollViewer>
+</Page>
