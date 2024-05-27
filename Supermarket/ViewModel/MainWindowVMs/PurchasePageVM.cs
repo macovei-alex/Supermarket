@@ -211,7 +211,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (ReceiptBL.CreateReceipt(Receipt))
 			{
-				MessageBox.Show(nameof(Receipt), "The receipt was successfully created", MessageBoxButton.OK, MessageBoxImage.Information);
+				Functions.LogInfo("The receipt was successfully created");
 				Receipt = new ReceiptVM();
 				ResetReceiptItem();
 			}

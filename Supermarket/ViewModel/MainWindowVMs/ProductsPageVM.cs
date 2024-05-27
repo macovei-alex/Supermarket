@@ -191,10 +191,10 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			ResetFiltersCommand = new RelayCommandVoid(ResetFilters);
 
-			AddCategoryCommand = new RelayCommandVoid(AddCategory);
-			AddCountryCommand = new RelayCommandVoid(AddCountry);
-			AddProducerCommand = new RelayCommandVoid(AddProducer);
-			AddProductCommand = new RelayCommandVoid(AddProduct);
+			AddCategoryCommand = new RelayCommandVoid(AddCategory, () => LocalStorage.CurrentUser.IsAdmin);
+			AddCountryCommand = new RelayCommandVoid(AddCountry, () => LocalStorage.CurrentUser.IsAdmin);
+			AddProducerCommand = new RelayCommandVoid(AddProducer, () => LocalStorage.CurrentUser.IsAdmin);
+			AddProductCommand = new RelayCommandVoid(AddProduct, () => LocalStorage.CurrentUser.IsAdmin);
 
 			EditCategoryCommand = new RelayCommandVoid(EditCategory, () => LocalStorage.CurrentUser.IsAdmin);
 			EditCountryCommand = new RelayCommandVoid(EditCountry, () => LocalStorage.CurrentUser.IsAdmin);

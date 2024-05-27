@@ -376,7 +376,8 @@ BEGIN
 	IF EXISTS (
 		SELECT 1
 		FROM Producer
-		WHERE is_active = 1 AND id = @ID
+		WHERE is_active = 1
+			AND id = @ID
 	)
 	BEGIN
 		BEGIN TRANSACTION;
@@ -399,7 +400,7 @@ BEGIN
 		END		
 	END
 	
-	ELSE BEGIN SELECT 'There is no product with this ID'; END
+	ELSE BEGIN SELECT 'There is no producer with this ID'; END
 END;
 GO
 

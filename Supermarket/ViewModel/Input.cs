@@ -13,13 +13,26 @@ namespace Supermarket.ViewModel
 			return $"{Label}: {Value}";
 		}
 
-		public static string CollectionToString(Collection<Input> inputCollection)
+		public static string CollectionToString(Collection<Input> inputCollection, bool printLabels = false)
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach (var input in inputCollection)
+
+			if (printLabels)
 			{
-				sb.Append(input.ToString()).Append("; ");
+				foreach (var input in inputCollection)
+				{
+					sb.Append(input.ToString()).Append("; ");
+				}
 			}
+
+			else
+			{
+				foreach (var input in inputCollection)
+				{
+					sb.Append(input.Value).Append("; ");
+				}
+			}
+
 			return sb.Remove(sb.Length - 2, 2).ToString();
 		}
 	}

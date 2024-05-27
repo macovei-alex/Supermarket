@@ -85,9 +85,9 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			Stocks = StocksBL.GetAllStocks();
 			SelectedStockCopy = new StockVM();
 
-			AddCommand = new RelayCommandVoid(Add);
-			EditCommand = new RelayCommandVoid(Edit);
-			DeleteCommand = new RelayCommandVoid(Delete);
+			AddCommand = new RelayCommandVoid(Add, () => LocalStorage.CurrentUser.IsAdmin);
+			EditCommand = new RelayCommandVoid(Edit, () => LocalStorage.CurrentUser.IsAdmin);
+			DeleteCommand = new RelayCommandVoid(Delete, () => LocalStorage.CurrentUser.IsAdmin);
 		}
 
 		private bool CommonChecks()
@@ -243,7 +243,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (StocksBL.EditStock(SelectedStockCopy))
 			{
-				MessageBox.Show("Stock edited successfully");
+				Functions.LogInfo("Stock edited successfully");
 				Stocks.RepopulateFrom(StocksBL.GetAllStocks());
 			}
 		}
@@ -252,7 +252,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (StocksBL.DeleteStock(SelectedStockCopy.ID))
 			{
-				MessageBox.Show("Stock deleted successfully");
+				Functions.LogInfo("Stock deleted successfully");
 				Stocks.RepopulateFrom(StocksBL.GetAllStocks());
 			}
 		}

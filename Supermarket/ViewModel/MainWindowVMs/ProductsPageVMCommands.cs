@@ -26,7 +26,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				string name = inputs[0].Value;
 				if (CategoryBL.CreateCategory(name))
 				{
-					MessageBox.Show($"Category {name} created successfuly");
+					Functions.LogInfo($"Category {name} created successfuly");
 					Categories.RepopulateFrom(CategoryBL.GetAllCategories());
 					ResetFilters();
 				}
@@ -49,7 +49,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				string name = inputs[0].Value;
 				if (CountryBL.CreateCountry(name))
 				{
-					MessageBox.Show($"Country {name} created successfuly");
+					Functions.LogInfo($"Country {name} created successfuly");
 					Countries.RepopulateFrom(CountryBL.GetAllCountries());
 					ResetFilters();
 				}
@@ -74,13 +74,13 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				var country = Cache.Instance.Countries.Find((c) => c.Name == countryName);
 				if (country == null)
 				{
-					MessageBox.Show($"Please add the country ( {countryName} ) first");
+					Functions.LogError($"Please add the country ( {countryName} ) first");
 					return;
 				}
 
 				if (ProducerBL.CreateProducer(producerName, country.ID))
 				{
-					MessageBox.Show($"Category {producerName} created successfuly");
+					Functions.LogInfo($"Category {producerName} created successfuly");
 					Producers.RepopulateFrom(ProducerBL.GetAllProducers());
 					ResetFilters();
 				}
@@ -102,7 +102,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (ProductBL.CreateProduct(inputs[0].Value, inputs[1].Value, inputs[2].Value, inputs[3].Value))
 				{
-					MessageBox.Show($"Product {inputs[0].Value} created successfuly");
+					Functions.LogInfo($"Product {inputs[0].Value} created successfuly");
 					Products.RepopulateFrom(ProductBL.GetAllProducts());
 					ResetFilters();
 				}
@@ -124,7 +124,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (CategoryBL.EditCategory(inputs[0].Value, inputs[1].Value))
 				{
-					MessageBox.Show($"Category {inputs[0].Value} edited successfuly");
+					Functions.LogInfo($"Category {inputs[0].Value} edited successfuly");
 					Categories.RepopulateFrom(CategoryBL.GetAllCategories());
 					Products.RepopulateFrom(ProductBL.GetAllProducts());
 					ResetFilters();
@@ -147,7 +147,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (CountryBL.EditCountry(inputs[0].Value, inputs[1].Value))
 				{
-					MessageBox.Show($"Country {inputs[0].Value} edited successfuly");
+					Functions.LogInfo($"Country {inputs[0].Value} edited successfuly");
 					Countries.RepopulateFrom(CountryBL.GetAllCountries());
 					Products.RepopulateFrom(ProductBL.GetAllProducts());
 					ResetFilters();
@@ -166,15 +166,41 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			}
 
 			var result = MessageBox.Show($"Do you really want to edit the producer {{ {Input.CollectionToString(inputs)} }}?", "Confirmation", MessageBoxButton.YesNo);
-			if (result == MessageBoxResult.Yes)
+			if (result != MessageBoxResult.Yes)
 			{
-				if (ProducerBL.EditProducer(inputs[0].Value, inputs[1].Value, inputs[2].Value))
+				return;
+			}
+
+			var producerModel = Cache.Instance.Producers.Find((p) => p.Name == inputs[0].Value);
+			int producerID = producerModel.ID;
+			int countryID = producerModel.CountryID;
+			string newProducerName = inputs[1].Value;
+			string newCountryName = inputs[2].Value;
+
+			if (Functions.AreNotNullOrEmpty(newProducerName))
+			{
+				newProducerName = producerModel.Name;
+			}
+
+			if (Functions.AreNotNullOrEmpty(newCountryName))
+			{
+				var countryModel = Cache.Instance.Countries.Find((c) => c.ID == producerModel.CountryID);
+				if (countryModel == null)
 				{
-					MessageBox.Show($"Product {inputs[0].Value} edited successfuly");
-					Producers.RepopulateFrom(ProducerBL.GetAllProducers());
-					Products.RepopulateFrom(ProductBL.GetAllProducts());
-					ResetFilters();
+					Functions.LogError($"Country ( {newCountryName} ) does not exist");
+					return;
 				}
+
+				newCountryName = countryModel.Name;
+				countryID = countryModel.ID;
+			}
+
+			if (ProducerBL.EditProducer(producerID, newProducerName, countryID))
+			{
+				Functions.LogInfo($"Product {inputs[0].Value} edited successfuly");
+				Producers.RepopulateFrom(ProducerBL.GetAllProducers());
+				Products.RepopulateFrom(ProductBL.GetAllProducts());
+				ResetFilters();
 			}
 		}
 
@@ -242,7 +268,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (ProductBL.EditProduct(productID, newName, newBarcode, categoryID, producerID))
 			{
-				MessageBox.Show($"Product {productModel.Name} edited successfuly");
+				Functions.LogInfo($"Product {productModel.Name} edited successfuly");
 				Products.RepopulateFrom(ProductBL.GetAllProducts());
 				ResetFilters();
 			}
@@ -263,7 +289,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (CategoryBL.DeleteCategory(inputs[0].Value))
 				{
-					MessageBox.Show($"Category {inputs[0].Value} deleted successfuly");
+					Functions.LogInfo($"Category {inputs[0].Value} deleted successfuly");
 					Categories.RepopulateFrom(CategoryBL.GetAllCategories());
 					ResetFilters();
 				}
@@ -285,7 +311,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (CountryBL.DeleteCountry(inputs[0].Value))
 				{
-					MessageBox.Show($"Country {inputs[0].Value} deleted successfuly");
+					Functions.LogInfo($"Country {inputs[0].Value} deleted successfuly");
 					Countries.RepopulateFrom(CountryBL.GetAllCountries());
 					ResetFilters();
 				}
@@ -307,7 +333,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (ProducerBL.DeleteProducer(inputs[0].Value))
 				{
-					MessageBox.Show($"Producer {inputs[0].Value} deleted successfuly");
+					Functions.LogInfo($"Producer {inputs[0].Value} deleted successfuly");
 					Producers.RepopulateFrom(ProducerBL.GetAllProducers());
 					ResetFilters();
 				}
@@ -329,7 +355,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				if (ProductBL.DeleteProduct(inputs[0].Value))
 				{
-					MessageBox.Show($"Product {inputs[0].Value} deleted successfuly");
+					Functions.LogInfo($"Product {inputs[0].Value} deleted successfuly");
 					Products.RepopulateFrom(ProductBL.GetAllProducts());
 					ResetFilters();
 				}

@@ -110,7 +110,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (MarketUserBL.CreateUser(NewName, NewPassword, MarketUserVM.IsAdminStr(NewType)))
 			{
-				MessageBox.Show($"Successfuly added user ( {NewName} )");
+				Functions.LogInfo($"Successfuly added user ( {NewName} )");
 				Users.RepopulateFrom(MarketUserBL.GetAllUsers());
 			}
 		}
@@ -137,7 +137,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (MarketUserBL.EditUser(SelectedUser.ID, NewName, SelectedUser.PasswordHash, NewPassword, MarketUserVM.IsAdminStr(NewType)))
 			{
-				MessageBox.Show($"Successfuly edited user ( {NewName} )");
+				Functions.LogInfo($"Successfuly edited user ( {NewName} )");
 				Users.RepopulateFrom(MarketUserBL.GetAllUsers());
 			}
 		}
@@ -158,6 +158,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (MarketUserBL.DeleteUser(NewName))
 			{
+				Functions.LogInfo($"Successfuly deleted user ( {NewName} )");
 				Users.RepopulateFrom(MarketUserBL.GetAllUsers());
 			}
 		}

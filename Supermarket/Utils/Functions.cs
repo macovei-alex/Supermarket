@@ -48,6 +48,11 @@ namespace Supermarket.Utilities
 			MessageBox.Show(message, "Error", MessageBoxButton.OK);
 		}
 
+		public static void LogInfo(string message)
+		{
+			MessageBox.Show(message, "Info", MessageBoxButton.OK);
+		}
+
 		public static string SqlCallWrapper(Func<object> p)
 		{
 			try
