@@ -98,13 +98,13 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (!Functions.AreNotNullOrEmpty(NewName, NewPassword, NewPasswordConfirmation))
 			{
-				MessageBox.Show("Please make sure the username, the password and the password confirmation are not empty");
+				Functions.LogError("Please make sure the username, the password and the password confirmation are not empty");
 				return;
 			}
 
 			if (NewPassword != NewPasswordConfirmation)
 			{
-				MessageBox.Show("Passwords do not match");
+				Functions.LogError("Passwords do not match");
 				return;
 			}
 
@@ -119,19 +119,19 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (SelectedUser == null)
 			{
-				MessageBox.Show("Please select a user to edit first");
+				Functions.LogError("Please select a user to edit first");
 				return;
 			}
 
 			if (!Functions.AreNotNullOrEmpty(NewName))
 			{
-				MessageBox.Show("Please make sure the username is not empty");
+				Functions.LogError("Please make sure the username is not empty");
 				return;
 			}
 
 			if (NewPassword != NewPasswordConfirmation)
 			{
-				MessageBox.Show("Passwords do not match");
+				Functions.LogError("Passwords do not match");
 				return;
 			}
 
@@ -146,7 +146,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (!Functions.AreNotNullOrEmpty(NewName))
 			{
-				MessageBox.Show("Please make sure the username is not empty");
+				Functions.LogError("Please make sure the username is not empty");
 				return;
 			}
 

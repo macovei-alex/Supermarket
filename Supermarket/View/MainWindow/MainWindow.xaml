@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:Supermarket"
 		xmlns:context="clr-namespace:Supermarket.ViewModel.MainWindowVMs"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Height="450" Width="800"
 		SizeToContent="WidthAndHeight"
-		Loaded="MainWindow_Loaded">
+		Loaded="MainWindow_Loaded"
+		Title="Supermarket">
 	<Window.DataContext>
 		<context:MainWindowVM/>
 	</Window.DataContext>

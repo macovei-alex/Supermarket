@@ -1,5 +1,6 @@
 ﻿using Supermarket.Model;
 using Supermarket.Model.BusinessLogic;
+using Supermarket.Utilities;
 using Supermarket.Utils;
 using Supermarket.View;
 using System.Collections.Generic;
@@ -188,14 +189,62 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			}
 
 			var result = MessageBox.Show($"Do you really want to edit the category {{ {Input.CollectionToString(inputs)} }}?", "Confirmation", MessageBoxButton.YesNo);
-			if (result == MessageBoxResult.Yes)
+			if (result != MessageBoxResult.Yes)
 			{
-				if (ProductBL.EditProduct(inputs[0].Value, inputs[1].Value, inputs[2].Value, inputs[3].Value, inputs[4].Value))
+				return;
+			}
+
+			var productModel = Cache.Instance.Products.Find((p) => p.Name == inputs[0].Value);
+			if (productModel == null)
+			{
+				Functions.LogError($"Product ( {inputs[0].Value} ) does not exist");
+				return;
+			}
+
+			int productID = productModel.ID;
+			string newName = inputs[1].Value;
+			string newBarcode = inputs[2].Value;
+			int categoryID = productModel.CategoryID;
+			int producerID = productModel.ProducerID;
+
+			if (!Functions.AreNotNullOrEmpty(newName))
+			{
+				newName = productModel.Name;
+			}
+			if (!Functions.AreNotNullOrEmpty(newBarcode))
+			{
+				newBarcode = productModel.Barcode;
+			}
+
+			string newCategoryName = inputs[3].Value;
+			if (Functions.AreNotNullOrEmpty(newCategoryName))
+			{
+				var categoryModel = Cache.Instance.Categories.Find((c) => c.Name == newCategoryName);
+				if (categoryModel == null)
 				{
-					MessageBox.Show($"Product {inputs[0].Value} edited successfuly");
-					Products.RepopulateFrom(ProductBL.GetAllProducts());
-					ResetFilters();
+					Functions.LogError($"Category ( {newCategoryName} ) does not exist");
+					return;
 				}
+				categoryID = categoryModel.ID;
+			}
+
+			string newProducerName = inputs[4].Value;
+			if (Functions.AreNotNullOrEmpty(newProducerName))
+			{
+				var producerModel = Cache.Instance.Producers.Find((c) => c.Name == newProducerName);
+				if (productModel == null)
+				{
+					Functions.LogError($"Producer ( {newProducerName} ) does not exist");
+					return;
+				}
+				producerID = producerModel.ID;
+			}
+
+			if (ProductBL.EditProduct(productID, newName, newBarcode, categoryID, producerID))
+			{
+				MessageBox.Show($"Product {productModel.Name} edited successfuly");
+				Products.RepopulateFrom(ProductBL.GetAllProducts());
+				ResetFilters();
 			}
 		}
 

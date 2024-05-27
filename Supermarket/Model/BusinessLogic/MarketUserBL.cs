@@ -40,6 +40,7 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.User);
 			return true;
 		}
 
@@ -52,6 +53,7 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.User);
 			return true;
 		}
 
@@ -64,6 +66,7 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.User);
 			return true;
 		}
 
@@ -81,6 +84,7 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.User);
 			return true;
 		}
 	}

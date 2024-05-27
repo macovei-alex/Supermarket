@@ -36,14 +36,14 @@ namespace Supermarket.Model.BusinessLogic
 			var category = Cache.Instance.Categories.Find((c) => c.Name == categoryName);
 			if (category == null)
 			{
-				Functions.LogError($"There is no category with name ( {name} ).");
+				Functions.LogError($"There is no category with name ( {categoryName} ).");
 				return false;
 			}
 
 			var producer = Cache.Instance.Producers.Find((p) => p.Name == producerName);
 			if (producer == null)
 			{
-				Functions.LogError($"There is no producer with name ( {name} ).");
+				Functions.LogError($"There is no producer with name ( {producerName} ).");
 				return false;
 			}
 
@@ -78,7 +78,7 @@ namespace Supermarket.Model.BusinessLogic
 				var category = Cache.Instance.Categories.Find((c) => c.Name == categoryName);
 				if (category == null)
 				{
-					Functions.LogError($"There is no category with name ( {name} ).");
+					Functions.LogError($"There is no category with name ( {categoryName} ).");
 					return false;
 				}
 				categoryID = category.ID;
@@ -90,7 +90,7 @@ namespace Supermarket.Model.BusinessLogic
 				var producer = Cache.Instance.Producers.Find((p) => p.Name == producerName);
 				if (producer == null)
 				{
-					Functions.LogError($"There is no producer with name ( {name} ).");
+					Functions.LogError($"There is no producer with name ( {producerName} ).");
 					return false;
 				}
 				producerID = producer.ID;

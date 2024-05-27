@@ -65,6 +65,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -95,10 +96,12 @@
     <Compile Include="Model\DataAccess\EntityDALs\ProducerDAL.cs" />
     <Compile Include="Model\DataAccess\EntityDALs\ProductDAL.cs" />
     <Compile Include="Model\DataAccess\EntityDALs\ReceiptDAL.cs" />
+    <Compile Include="Model\DataAccess\EntityDALs\ReceiptItemDAL.cs" />
     <Compile Include="Model\DataAccess\EntityDALs\StockDAL.cs" />
     <Compile Include="Model\Entities\Producer.cs" />
     <Compile Include="Model\Entities\Product.cs" />
     <Compile Include="Model\Entities\Receipt.cs" />
+    <Compile Include="Model\Entities\ReceiptItem.cs" />
     <Compile Include="Model\Entities\Stock.cs" />
     <Compile Include="Utils\DatabaseException.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="ViewModel\DataVM\CountryVM.cs" />
     <Compile Include="ViewModel\DataVM\ProducerVM.cs" />
     <Compile Include="ViewModel\DataVM\ProductVM.cs" />
+    <Compile Include="ViewModel\DataVM\ReceiptItemVM.cs" />
     <Compile Include="ViewModel\DataVM\ReceiptVM.cs" />
     <Compile Include="ViewModel\DataVM\StockVM.cs" />
     <Compile Include="ViewModel\Input.cs" />
@@ -116,6 +120,7 @@
     <Compile Include="ViewModel\MainWindowVMs\EmployeeStatisticsPageVM.cs" />
     <Compile Include="ViewModel\MainWindowVMs\ProductsPageVM.cs" />
     <Compile Include="ViewModel\MainWindowVMs\ProductsPageVMCommands.cs" />
+    <Compile Include="ViewModel\MainWindowVMs\PurchasePageVM.cs" />
     <Compile Include="ViewModel\MainWindowVMs\StocksPageVM.cs" />
     <Compile Include="ViewModel\MainWindowVMs\UsersPageVM.cs" />
     <Compile Include="View\InputWindow.xaml.cs">
@@ -126,6 +131,9 @@
     </Compile>
     <Compile Include="View\MainWindow\ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow\PurchasePage.xaml.cs">
+      <DependentUpon>PurchasePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow\StocksPage.xaml.cs">
       <DependentUpon>StocksPage.xaml</DependentUpon>
@@ -142,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainWindow\ProductsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow\PurchasePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

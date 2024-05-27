@@ -32,3 +32,5 @@ DROP PROCEDURE EditStock;
 DROP PROCEDURE GetProductsValueFiltered;
 DROP PROCEDURE GetReceiptsFiltered;
 DROP PROCEDURE GetLargestReceipt;
+DROP PROCEDURE CreateReceipt
+DROP PROCEDURE GetReceiptItems;

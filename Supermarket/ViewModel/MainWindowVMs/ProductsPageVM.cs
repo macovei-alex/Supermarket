@@ -293,6 +293,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 					.Where((product) => product.Barcode.Contains(BarcodeFilter))
 					.AsQueryable();
 			}
+
 			return filteredProducts;
 		}
 

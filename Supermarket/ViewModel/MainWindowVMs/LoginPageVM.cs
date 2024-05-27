@@ -65,7 +65,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			MarketUserVM user = MarketUserBL.Login(Username, Password, LoginAsAdmin);
 			if (user == null)
 			{
-				MessageBox.Show($"There is no {(LoginAsAdmin ? Cache.Instance.AdminStr : Cache.Instance.CashierStr)} with username ( {Username} ), password ( {Password} )");
+				Functions.LogError($"There is no {(LoginAsAdmin ? Cache.Instance.AdminStr : Cache.Instance.CashierStr)} with username ( {Username} ), password ( {Password} )");
 				return;
 			}
 

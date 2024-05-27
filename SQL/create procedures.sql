@@ -88,11 +88,11 @@ CREATE PROCEDURE DeleteUserByName
 	@Name NVARCHAR(64)
 AS
 BEGIN
-	IF NOT EXISTS (
+	IF EXISTS (
 		SELECT 1
 		FROM MarketUser
 		WHERE is_active = 1
-			AND name = @name
+			AND name = @Name
 	)
 	BEGIN
 		UPDATE MarketUser
@@ -467,34 +467,30 @@ CREATE PROCEDURE EditProduct
 	@ProducerID INT
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Product
-		WHERE is_active = 1
-			AND (name = @Name OR barcode = @Barcode)
-	)
-	BEGIN
-		BEGIN TRANSACTION;
-	
-		UPDATE Product
-		SET name = @Name, barcode = @Barcode, id_category = @CategoryID, id_producer = @ProducerID
-		WHERE is_active = 1
-			AND id = @ID;
-			
-		IF (SELECT COUNT(id) FROM Product WHERE is_active = 1 AND name = @Name) > 1
-		BEGIN
-			ROLLBACK TRANSACTION;
-			SELECT 'There already is a product with this name';
-		END
+	BEGIN TRANSACTION;
+
+	UPDATE Product
+	SET name = @Name, barcode = @Barcode, id_category = @CategoryID, id_producer = @ProducerID
+	WHERE is_active = 1
+		AND id = @ID;
 		
-		ELSE
-		BEGIN
-			SELECT 'Success';
-			COMMIT TRANSACTION;
-		END
+	IF (SELECT COUNT(id) FROM Product WHERE is_active = 1 AND name = @Name) > 1
+	BEGIN
+		ROLLBACK TRANSACTION;
+		SELECT 'There already is a product with this name';
 	END
 	
-	ELSE BEGIN SELECT 'There already is a product with this name or barcode'; END
+	IF (SELECT COUNT(id) FROM Product WHERE is_active = 1 AND barcode = @Barcode) > 1
+	BEGIN
+		ROLLBACK TRANSACTION;
+		SELECT 'There already is a product with this barcode';
+	END
+	
+	ELSE
+	BEGIN
+		SELECT 'Success';
+		COMMIT TRANSACTION;
+	END
 END;
 GO
 
@@ -678,3 +674,26 @@ BEGIN
 		AND issue_date = @SelectedDate
 	ORDER BY total_price DESC;
 END
+
+CREATE PROCEDURE CreateReceipt
+	@IssueDate DATE,
+	@CashierID INT,
+	@TotalPrice DECIMAL
+AS
+BEGIN
+	INSERT INTO Receipt (issue_date, id_cashier, total_price)
+	VALUES (@IssueDate, @CashierID, @TotalPrice);
+	
+	SELECT 'Success';
+END
+
+CREATE PROCEDURE GetReceiptItems
+	@ReceiptID INT
+AS
+BEGIN
+	SELECT id, id_receipt, id_product, quantity, total_price
+	FROM ReceiptItem
+	WHERE is_active = 1
+		AND id_receipt = @ReceiptID;
+END;
+GO

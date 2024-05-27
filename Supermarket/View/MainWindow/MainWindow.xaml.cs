@@ -37,22 +37,6 @@ namespace Supermarket.View.MainWindow
 		public void MainWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			LocalStorage.WindowVM = DataContext as MainWindowVM;
-
-			Console.WriteLine("User types: ");
-			Cache.Instance.UserTypes.Print();
-
-			Console.WriteLine("\nCountries: ");
-			Cache.Instance.Countries.Print();
-
-			Console.WriteLine("\nCategories: ");
-			Cache.Instance.Categories.Print();
-
-			Console.WriteLine("\nProducers: ");
-			Cache.Instance.Producers.Print();
-
-			Console.WriteLine("\nProducts: ");
-			Cache.Instance.Products.Print();
-			Console.WriteLine("\nVAT: " + Cache.Instance.VAT);
 		}
 	}
 }

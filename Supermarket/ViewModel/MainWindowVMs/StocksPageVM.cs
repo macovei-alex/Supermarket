@@ -94,32 +94,32 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (SelectedStockCopy == null)
 			{
-				MessageBox.Show("Please first select the stock you want to modify from the table below");
+				Functions.LogError("Please first select the stock you want to modify from the table below");
 				return false;
 			}
 
 			if (!Functions.AreNotNullOrEmpty(PurchasePriceString, SellingPriceString))
 			{
-				MessageBox.Show("Please enter the prices");
+				Functions.LogError("Please enter the prices");
 				return false;
 			}
 
 			if (!Functions.AreNotNullOrEmpty(SelectedStockCopy.Product?.Name))
 			{
-				MessageBox.Show("Please enter a product name first");
+				Functions.LogError("Please enter a product name first");
 				return false;
 			}
 
 			if (!Functions.AreNotNullOrEmpty(SelectedStockCopy.Unit))
 			{
-				MessageBox.Show("Please enter a unit of measure first");
+				Functions.LogError("Please enter a unit of measure first");
 				return false;
 			}
 
 			var product = Cache.Instance.Products.Find((p) => p.Name == SelectedStockCopy.Product.Name);
 			if (product == null)
 			{
-				MessageBox.Show($"There is no product with name ( {SelectedStockCopy.Product.ID} )");
+				Functions.LogError($"There is no product with name ( {SelectedStockCopy.Product.ID} )");
 				return false;
 			}
 
@@ -140,38 +140,38 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			}
 			catch (FormatException)
 			{
-				MessageBox.Show("Please enter a valid number for the prices");
+				Functions.LogError("Please enter a valid number for the prices");
 				return;
 			}
 
 			if (SelectedStockCopy.PurchasePrice > SelectedStockCopy.SellingPrice)
 			{
-				MessageBox.Show("Selling price cannot be less than purchase price");
+				Functions.LogError("Selling price cannot be less than purchase price");
 				return;
 			}
 
 			if (SelectedStockCopy.InitialQuantity <= 0)
 			{
-				MessageBox.Show("Initial Quantity cannot be null or negative");
+				Functions.LogError("Initial Quantity cannot be null or negative");
 				return;
 			}
 
 			if (SelectedStockCopy.ExpirationDate < DateTime.Now)
 			{
-				MessageBox.Show("Expiration date cannot be in the past");
+				Functions.LogError("Expiration date cannot be in the past");
 				return;
 			}
 
 			if (SelectedStockCopy.ExpirationDate < SelectedStockCopy.SupplyDate)
 			{
-				MessageBox.Show("Expiration date cannot be before supply date");
+				Functions.LogError("Expiration date cannot be before supply date");
 				return;
 			}
 
 			SelectedStockCopy.Product = new ProductVM(Cache.Instance.Products.Find((p) => p.Name == SelectedStockCopy.Product.Name));
 			if (StocksBL.CreateStock(SelectedStockCopy))
 			{
-				MessageBox.Show("Stock created successfully");
+				Functions.LogError("Stock created successfully");
 				Stocks.RepopulateFrom(StocksBL.GetAllStocks());
 			}
 		}
@@ -180,7 +180,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (SelectedStockCopy.ID <= 0)
 			{
-				MessageBox.Show("Please select the stock you want to edit first");
+				Functions.LogError("Please select the stock you want to edit first");
 			}
 
 			if (!CommonChecks())
@@ -190,13 +190,13 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 			if (SelectedStock == null)
 			{
-				MessageBox.Show("Please first select the stock you want to edit");
+				Functions.LogError("Please first select the stock you want to edit");
 				return;
 			}
 
 			if (!Functions.AreNotNullOrEmpty(SelectedStockCopy.Product?.Name))
 			{
-				MessageBox.Show("Please enter a product name first");
+				Functions.LogError("Please enter a product name first");
 				return;
 			}
 
@@ -207,37 +207,37 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			}
 			catch (FormatException)
 			{
-				MessageBox.Show("Please enter a valid number for the prices");
+				Functions.LogError("Please enter a valid number for the prices");
 				return;
 			}
 
 			if (SelectedStock.PurchasePrice != SelectedStockCopy.PurchasePrice)
 			{
-				MessageBox.Show("You cannot change the purchase price of a stock");
+				Functions.LogError("You cannot change the purchase price of a stock");
 				return;
 			}
 
 			if (SelectedStockCopy.PurchasePrice > SelectedStockCopy.SellingPrice)
 			{
-				MessageBox.Show("Selling price cannot be less than purchase price");
+				Functions.LogError("Selling price cannot be less than purchase price");
 				return;
 			}
 
 			if (SelectedStockCopy.Quantity <= 0 || SelectedStockCopy.InitialQuantity <= 0)
 			{
-				MessageBox.Show("Quantity and Initial Quantity cannot be null negative");
+				Functions.LogError("Quantity and Initial Quantity cannot be null negative");
 				return;
 			}
 
 			if (SelectedStockCopy.ExpirationDate < DateTime.Now)
 			{
-				MessageBox.Show("Expiration date cannot be in the past");
+				Functions.LogError("Expiration date cannot be in the past");
 				return;
 			}
 
 			if (SelectedStockCopy.ExpirationDate < SelectedStockCopy.SupplyDate)
 			{
-				MessageBox.Show("Expiration date cannot be before supply date");
+				Functions.LogError("Expiration date cannot be before supply date");
 				return;
 			}
 

@@ -54,6 +54,10 @@ namespace Supermarket.ViewModel.MainWindowVMs
 					CurrentPage = new EmployeeStatisticsPage();
 					break;
 
+				case nameof(PurchasePage):
+					CurrentPage = new PurchasePage();
+					break;
+
 				default:
 					Console.WriteLine($"Page {pageType} not found.");
 					break;

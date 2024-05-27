@@ -1,4 +1,5 @@
-﻿using Supermarket.ViewModel.DataVM;
+﻿using Supermarket.View.MainWindow;
+using Supermarket.ViewModel.DataVM;
 using Supermarket.ViewModel.MainWindowVMs;
 
 namespace Supermarket.ViewModel

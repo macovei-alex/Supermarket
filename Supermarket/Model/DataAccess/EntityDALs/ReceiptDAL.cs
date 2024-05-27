@@ -1,4 +1,5 @@
 ﻿using Supermarket.Model.Entities;
+using Supermarket.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -57,6 +58,27 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 				{
 					return reader.Read() ? new Receipt(reader) : null;
 				}
+			}
+		}
+
+		public static string CreateReceipt(DateTime issueDate, int cashierID, decimal totalPrice)
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				Connection = connection,
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(CreateReceipt),
+				Parameters =
+				{
+					new SqlParameter("@IssueDate", issueDate),
+					new SqlParameter("@CashierID", cashierID),
+					new SqlParameter("@TotalPrice", totalPrice)
+				}
+			})
+			{
+				connection.Open();
+				return Functions.SqlCallWrapper(() => command.ExecuteScalar());
 			}
 		}
 	}
