@@ -61,7 +61,7 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 			using (SqlCommand command = new SqlCommand
 			{
 				CommandType = CommandType.StoredProcedure,
-				CommandText = nameof(CreateCategory),
+				CommandText = nameof(EditCategory),
 				Connection = connection,
 				Parameters =
 				{

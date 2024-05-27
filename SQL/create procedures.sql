@@ -309,7 +309,7 @@ BEGIN
 		SELECT 1
 		FROM Category
 		WHERE is_active = 1 
-			AND id = @id
+			AND id = @ID
 	)
 	BEGIN
 		BEGIN TRANSACTION;
