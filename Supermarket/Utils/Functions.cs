@@ -18,16 +18,16 @@ namespace Supermarket.Utilities
 			}
 		}
 
-		public static bool AreNotNullOrEmpty(params string[] passwords)
+		public static bool AreNotNullOrEmpty(params string[] strings)
 		{
-			if (passwords == null || passwords?.Length == 0)
+			if (strings == null || strings?.Length == 0)
 			{
 				return false;
 			}
 
-			foreach (string password in passwords)
+			foreach (string item in strings)
 			{
-				if (password == null || password == string.Empty)
+				if (item == null || item == string.Empty)
 				{
 					return false;
 				}

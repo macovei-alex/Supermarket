@@ -81,7 +81,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				if (ProducerBL.CreateProducer(producerName, country.ID))
 				{
 					Functions.LogInfo($"Category {producerName} created successfuly");
-					Producers.RepopulateFrom(ProducerBL.GetAllProducers());
+					Producers.RepopulateFrom(ProducerBL.GetActiveProducers());
 					ResetFilters();
 				}
 			}
@@ -103,7 +103,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				if (ProductBL.CreateProduct(inputs[0].Value, inputs[1].Value, inputs[2].Value, inputs[3].Value))
 				{
 					Functions.LogInfo($"Product {inputs[0].Value} created successfuly");
-					Products.RepopulateFrom(ProductBL.GetAllProducts());
+					Products.RepopulateFrom(ProductBL.GetActiveProducts());
 					ResetFilters();
 				}
 			}
@@ -126,7 +126,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				{
 					Functions.LogInfo($"Category {inputs[0].Value} edited successfuly");
 					Categories.RepopulateFrom(CategoryBL.GetAllCategories());
-					Products.RepopulateFrom(ProductBL.GetAllProducts());
+					Products.RepopulateFrom(ProductBL.GetActiveProducts());
 					ResetFilters();
 				}
 			}
@@ -149,7 +149,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				{
 					Functions.LogInfo($"Country {inputs[0].Value} edited successfuly");
 					Countries.RepopulateFrom(CountryBL.GetAllCountries());
-					Products.RepopulateFrom(ProductBL.GetAllProducts());
+					Products.RepopulateFrom(ProductBL.GetActiveProducts());
 					ResetFilters();
 				}
 			}
@@ -198,8 +198,8 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			if (ProducerBL.EditProducer(producerID, newProducerName, countryID))
 			{
 				Functions.LogInfo($"Product {inputs[0].Value} edited successfuly");
-				Producers.RepopulateFrom(ProducerBL.GetAllProducers());
-				Products.RepopulateFrom(ProductBL.GetAllProducts());
+				Producers.RepopulateFrom(ProducerBL.GetActiveProducers());
+				Products.RepopulateFrom(ProductBL.GetActiveProducts());
 				ResetFilters();
 			}
 		}
@@ -269,7 +269,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			if (ProductBL.EditProduct(productID, newName, newBarcode, categoryID, producerID))
 			{
 				Functions.LogInfo($"Product {productModel.Name} edited successfuly");
-				Products.RepopulateFrom(ProductBL.GetAllProducts());
+				Products.RepopulateFrom(ProductBL.GetActiveProducts());
 				ResetFilters();
 			}
 		}
@@ -356,7 +356,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				if (ProductBL.DeleteProduct(inputs[0].Value))
 				{
 					Functions.LogInfo($"Product {inputs[0].Value} deleted successfuly");
-					Products.RepopulateFrom(ProductBL.GetAllProducts());
+					Products.RepopulateFrom(ProductBL.GetActiveProducts());
 					ResetFilters();
 				}
 			}

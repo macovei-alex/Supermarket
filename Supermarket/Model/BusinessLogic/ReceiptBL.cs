@@ -84,7 +84,7 @@ namespace Supermarket.Model.BusinessLogic
 					}
 				}
 
-				StocksBL.InvalidateExpiredStocks();
+				StocksBL.DeactivateExpiredStocks();
 
 				transaction.Complete();
 			}

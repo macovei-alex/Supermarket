@@ -62,6 +62,20 @@ namespace Supermarket.Model
 			private set { Categories = value; }
 		}
 
+		private List<Producer> _activeProducers;
+		public List<Producer> ActiveProducers
+		{
+			get
+			{
+				if (_activeProducers == null)
+				{
+					LoadList(CacheType.Producer);
+				}
+				return _activeProducers;
+			}
+			private set { Producers = value; }
+		}
+
 		private List<Producer> _producers;
 		public List<Producer> Producers
 		{
@@ -175,6 +189,7 @@ namespace Supermarket.Model
 					break;
 
 				case CacheType.Producer:
+					_activeProducers = ProducerDAL.GetActiveProducers();
 					_producers = ProducerDAL.GetAllProducers();
 					break;
 
@@ -215,6 +230,7 @@ namespace Supermarket.Model
 					break;
 
 				case CacheType.Producer:
+					_activeProducers = null;
 					_producers = null;
 					break;
 

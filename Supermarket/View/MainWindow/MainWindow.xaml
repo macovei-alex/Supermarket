@@ -8,7 +8,6 @@
         mc:Ignorable="d"
         Height="450" Width="800"
 		SizeToContent="WidthAndHeight"
-		Loaded="MainWindow_Loaded"
 		Title="Supermarket">
 	<Window.DataContext>
 		<context:MainWindowVM/>

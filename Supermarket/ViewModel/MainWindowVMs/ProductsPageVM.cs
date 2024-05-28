@@ -184,10 +184,10 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 		public ProductsPageVM()
 		{
-			Products = new List<ProductVM>(ProductBL.GetAllProducts());
+			Products = new List<ProductVM>(ProductBL.GetActiveProducts());
 			Categories = new List<CategoryVM>(CategoryBL.GetAllCategories());
 			Countries = new List<CountryVM>(CountryBL.GetAllCountries());
-			Producers = new List<ProducerVM>(ProducerBL.GetAllProducers());
+			Producers = new List<ProducerVM>(ProducerBL.GetActiveProducers());
 
 			ResetFiltersCommand = new RelayCommandVoid(ResetFilters);
 

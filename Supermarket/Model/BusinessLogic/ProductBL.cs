@@ -18,6 +18,16 @@ namespace Supermarket.Model.BusinessLogic
 			return products;
 		}
 
+		public static ObservableCollection<ProductVM> GetActiveProducts()
+		{
+			var products = new ObservableCollection<ProductVM>();
+			foreach (var product in ProductDAL.GetActiveProducts())
+			{
+				products.Add(new ProductVM(product));
+			}
+			return products;
+		}
+
 		public static decimal GetProductsValueFiltered(List<int> categoryIDs, List<int> producerIDs)
 		{
 			decimal value = 0;

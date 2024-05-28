@@ -33,10 +33,5 @@ namespace Supermarket.View.MainWindow
 		{
 			InitializeComponent();
 		}
-
-		public void MainWindow_Loaded(object sender, RoutedEventArgs e)
-		{
-			LocalStorage.WindowVM = DataContext as MainWindowVM;
-		}
 	}
 }

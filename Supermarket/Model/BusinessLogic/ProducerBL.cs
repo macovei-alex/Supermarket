@@ -17,6 +17,16 @@ namespace Supermarket.Model.BusinessLogic
 			return producers;
 		}
 
+		public static ObservableCollection<ProducerVM> GetActiveProducers()
+		{
+			var producers = new ObservableCollection<ProducerVM>();
+			foreach (var producer in ProducerDAL.GetActiveProducers())
+			{
+				producers.Add(new ProducerVM(producer));
+			}
+			return producers;
+		}
+
 		public static bool CreateProducer(string name, int countryID)
 		{
 			string message = ProducerDAL.CreateProducer(name, countryID);

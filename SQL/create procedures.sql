@@ -341,6 +341,14 @@ CREATE PROCEDURE GetAllProducers
 AS
 BEGIN
 	SELECT id, id_country, name
+	FROM Producer;
+END;
+GO
+
+CREATE PROCEDURE GetActiveProducers
+AS
+BEGIN
+	SELECT id, id_country, name
 	FROM Producer
 	WHERE is_active = 1;
 END;
@@ -426,7 +434,7 @@ BEGIN
 		
 	END
 	
-	ELSE BEGIN SELECT 'There is no producer with this ID'; END
+	ELSE BEGIN SELECT 'There is no active producer with this ID'; END
 END;
 GO
 

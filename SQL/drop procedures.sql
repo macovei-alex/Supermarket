@@ -18,6 +18,7 @@ DROP PROCEDURE CreateCategory;
 DROP PROCEDURE DeleteCategory;
 DROP PROCEDURE EditCategory;
 DROP PROCEDURE GetAllProducers;
+DROP PROCEDURE GetActiveProducers;
 DROP PROCEDURE CreateProducer;
 DROP PROCEDURE DeleteProducer;
 DROP PROCEDURE EditProducer;

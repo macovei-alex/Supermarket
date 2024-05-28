@@ -25,7 +25,8 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		public MainWindowVM()
 		{
 			ChangePage(nameof(LoginPage));
-			StocksBL.InvalidateExpiredStocks();
+			StocksBL.DeactivateExpiredStocks();
+			LocalStorage.WindowVM = this;
 		}
 
 		public void ChangePage(string pageType)
