@@ -116,5 +116,20 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 				return Functions.SqlCallWrapper(() => command.ExecuteScalar());
 			}
 		}
+
+		public static string InvalidateEmptyStocks()
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(InvalidateEmptyStocks),
+				Connection = connection,
+			})
+			{
+				connection.Open();
+				return Functions.SqlCallWrapper(() => command.ExecuteScalar());
+			}
+		}
 	}
 }

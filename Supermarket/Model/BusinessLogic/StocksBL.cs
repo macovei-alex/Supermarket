@@ -62,9 +62,10 @@ namespace Supermarket.Model.BusinessLogic
 			return true;
 		}
 
-		public static bool DeactivateExpiredStocks()
+		public static bool DeactivateFinishedStocks()
 		{
-			return StockDAL.InvalidateExpiredStocks() == Cache.Instance.SuccessMessage;
+			return StockDAL.InvalidateExpiredStocks() == Cache.Instance.SuccessMessage
+				&& StockDAL.InvalidateEmptyStocks() == Cache.Instance.SuccessMessage;
 		}
 	}
 }

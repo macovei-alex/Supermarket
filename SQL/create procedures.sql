@@ -639,6 +639,17 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE InvalidateEmptyStocks
+AS
+BEGIN
+	UPDATE stock
+	SET is_active = 0
+	WHERE quantity <= 0;
+	
+	SELECT 'Success';
+END;
+GO
+
 CREATE PROCEDURE GetProductsValueFiltered
 	@CategoryID INT,
 	@ProducerID INT

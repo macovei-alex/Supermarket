@@ -33,6 +33,7 @@ DROP PROCEDURE AddNewStockToday;
 DROP PROCEDURE DeleteStock;
 DROP PROCEDURE EditStock;
 DROP PROCEDURE InvalidateExpiredStocks;
+DROP PROCEDURE InvalidateEmptyStocks;
 DROP PROCEDURE GetProductsValueFiltered;
 DROP PROCEDURE GetReceiptsFiltered;
 DROP PROCEDURE GetLargestReceipt;
