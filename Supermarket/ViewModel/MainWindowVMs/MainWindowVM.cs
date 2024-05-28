@@ -1,4 +1,5 @@
-﻿using Supermarket.View.MainWindow;
+﻿using Supermarket.Model.BusinessLogic;
+using Supermarket.View.MainWindow;
 using System;
 using System.Windows.Controls;
 
@@ -24,6 +25,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		public MainWindowVM()
 		{
 			ChangePage(nameof(LoginPage));
+			StocksBL.InvalidateExpiredStocks();
 		}
 
 		public void ChangePage(string pageType)

@@ -1,12 +1,6 @@
-﻿using Supermarket.Exceptions;
-using Supermarket.ViewModel;
-using Supermarket.ViewModel.DataVM;
+﻿using Supermarket.ViewModel.DataVM;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supermarket.Model.Entities
 {

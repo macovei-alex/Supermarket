@@ -1,5 +1,4 @@
 ﻿using Supermarket.Model.DataAccess.EntityDALs;
-using Supermarket.Model.Entities;
 using Supermarket.Utilities;
 using Supermarket.ViewModel.DataVM;
 using System.Collections.ObjectModel;

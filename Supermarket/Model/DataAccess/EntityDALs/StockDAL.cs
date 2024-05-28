@@ -1,13 +1,8 @@
-﻿using System;
+﻿using Supermarket.Model.Entities;
+using Supermarket.Utilities;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Supermarket.Model.Entities;
-using Supermarket.Utilities;
-using Supermarket.ViewModel.DataVM;
 
 namespace Supermarket.Model.DataAccess.EntityDALs
 {
@@ -100,6 +95,21 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 					new SqlParameter("@PurchasePrice", stock.PurchasePrice),
 					new SqlParameter("@SellingPrice", stock.SellingPrice),
 				}
+			})
+			{
+				connection.Open();
+				return Functions.SqlCallWrapper(() => command.ExecuteScalar());
+			}
+		}
+
+		public static string InvalidateExpiredStocks()
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(InvalidateExpiredStocks),
+				Connection = connection,
 			})
 			{
 				connection.Open();

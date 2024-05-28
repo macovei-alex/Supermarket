@@ -86,7 +86,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 		public UsersPageVM()
 		{
-			Users = MarketUserBL.GetAllUsers();
+			Users = MarketUserBL.GetActiveUsers();
 			UserTypes = new List<string> { Cache.Instance.AdminStr, Cache.Instance.CashierStr };
 
 			AddCommand = new RelayCommandVoid(Add, () => LocalStorage.CurrentUser.IsAdmin);
@@ -111,7 +111,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			if (MarketUserBL.CreateUser(NewName, NewPassword, MarketUserVM.IsAdminStr(NewType)))
 			{
 				Functions.LogInfo($"Successfuly added user ( {NewName} )");
-				Users.RepopulateFrom(MarketUserBL.GetAllUsers());
+				Users.RepopulateFrom(MarketUserBL.GetActiveUsers());
 			}
 		}
 
@@ -138,7 +138,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			if (MarketUserBL.EditUser(SelectedUser.ID, NewName, SelectedUser.PasswordHash, NewPassword, MarketUserVM.IsAdminStr(NewType)))
 			{
 				Functions.LogInfo($"Successfuly edited user ( {NewName} )");
-				Users.RepopulateFrom(MarketUserBL.GetAllUsers());
+				Users.RepopulateFrom(MarketUserBL.GetActiveUsers());
 			}
 		}
 
@@ -159,7 +159,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			if (MarketUserBL.DeleteUser(NewName))
 			{
 				Functions.LogInfo($"Successfuly deleted user ( {NewName} )");
-				Users.RepopulateFrom(MarketUserBL.GetAllUsers());
+				Users.RepopulateFrom(MarketUserBL.GetActiveUsers());
 			}
 		}
 	}

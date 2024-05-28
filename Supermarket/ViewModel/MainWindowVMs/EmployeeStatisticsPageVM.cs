@@ -134,7 +134,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 		public EmployeeStatisticsPageVM()
 		{
-			Employees = MarketUserBL.GetAllUsers();
+			Employees = MarketUserBL.GetActiveUsers();
 			SelectedEmployeeCopy = null;
 			StartDate = DateTime.Today;
 			EndDate = DateTime.Today;

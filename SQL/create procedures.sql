@@ -5,6 +5,14 @@ CREATE PROCEDURE GetAllUsers
 AS
 BEGIN
 	SELECT id, name, password_hash, id_type
+	FROM MarketUser;
+END;
+GO
+
+CREATE PROCEDURE GetActiveUsers
+AS
+BEGIN
+	SELECT id, name, password_hash, id_type
 	FROM MarketUser
 	WHERE is_active = 1;
 END;
@@ -44,20 +52,17 @@ CREATE PROCEDURE CreateUser
 	@UserType INT
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM MarketUser
-		WHERE is_active = 1
-			AND name = @Name
-	)
+	IF NOT EXISTS (SELECT 1 FROM MarketUser WHERE is_active = 1 AND name = @Name)
 	BEGIN
+		
 		INSERT INTO MarketUser (name, password_hash, id_type)
 		VALUES (@Name, @PasswordHash, @UserType);
 		
 		SELECT 'Success';
+		
 	END
 	
-	ELSE BEGIN SELECT 'There already is a user with this username'; END	
+	ELSE BEGIN SELECT 'There already is a user with this username'; END
 END;
 GO
 
@@ -65,19 +70,16 @@ CREATE PROCEDURE DeleteUser
 	@ID INT
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM MarketUser
-		WHERE is_active = 1
-			AND id = @id
-	)
+	IF EXISTS (SELECT 1 FROM MarketUser WHERE is_active = 1 AND id = @id)
 	BEGIN
+	
 		UPDATE MarketUser
 		SET is_active = 0
 		WHERE is_active = 1
 			AND id = @ID;
 		
 		SELECT 'Success';
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no user with this ID'; END
@@ -88,19 +90,16 @@ CREATE PROCEDURE DeleteUserByName
 	@Name NVARCHAR(64)
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM MarketUser
-		WHERE is_active = 1
-			AND name = @Name
-	)
+	IF EXISTS (SELECT 1 FROM MarketUser WHERE is_active = 1 AND name = @Name)
 	BEGIN
+	
 		UPDATE MarketUser
 		SET is_active = 0
 		WHERE is_active = 1
 			AND name = @Name;
 			
 		SELECT 'Success';
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no user with this username'; END
@@ -115,14 +114,9 @@ CREATE PROCEDURE EditUser
 	@UserType INT
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM MarketUser
-		WHERE is_active = 1
-			AND password_hash = @OldPasswordHash
-			AND id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM MarketUser WHERE is_active = 1 AND password_hash = @OldPasswordHash AND id = @ID)
 	BEGIN
+	
 		BEGIN TRANSACTION;
 			
 		UPDATE MarketUser
@@ -133,15 +127,20 @@ BEGIN
 			
 		IF (SELECT COUNT(id) FROM MarketUser WHERE is_active = 1 AND name = @Name) > 1
 		BEGIN
+		
 			ROLLBACK TRANSACTION;
 			SELECT 'There already is a category with this name';
+			
 		END
 		
 		ELSE
 		BEGIN
+		
 			COMMIT TRANSACTION;
 			SELECT 'Success';
+			
 		END
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no user with these credentials'; END
@@ -170,18 +169,16 @@ CREATE PROCEDURE CreateCountry
 	@Name NVARCHAR(64)
 AS
 BEGIN 
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Country
-		WHERE is_active = 1
-			AND name = @Name
-	)
+	IF NOT EXISTS (SELECT 1 FROM Country WHERE is_active = 1 AND name = @Name)
 	BEGIN
+	
 		INSERT INTO Country (name)
 		VALUES (@Name);
 		
 		SELECT 'Success';
+		
 	END
+	
 	ELSE BEGIN SELECT 'There already is a country with this name'; END
 END;
 GO
@@ -189,25 +186,27 @@ GO
 CREATE PROCEDURE DeleteCountry
 	@ID INT
 AS
-BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Country
-		JOIN Producer ON Producer.id_country = Country.id
-		WHERE Producer.is_active = 1
-			AND Country.is_active = 1
-			AND Country.id = @ID
-	)
+BEGIN 
+	IF EXISTS (SELECT 1 FROM Country WHERE is_active = 1 AND id = @ID)
 	BEGIN
-		UPDATE Country
-		SET is_active = 0
-		WHERE is_active = 1
-			AND id = @ID;
+	
+		IF NOT EXISTS (SELECT 1 FROM Producer WHERE id_country = @ID)
+		BEGIN
+		
+			UPDATE Country
+			SET is_active = 0
+			WHERE is_active = 1
+				AND id = @ID;
+		
+			SELECT 'Success';
 			
-		SELECT 'Success';
+		END
+		
+		ELSE BEGIN SELECT 'There is at least 1 active producer from this country'; END
+		
 	END
 	
-	ELSE BEGIN SELECT 'There are producers linked to this country'; END
+	ELSE BEGIN SELECT 'There is no country with this ID'; END
 END;
 GO
 
@@ -216,13 +215,9 @@ CREATE PROCEDURE EditCountry
 	@Name NVARCHAR(64)
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Country
-		WHERE is_active = 1
-			AND name = @Name
-	)
+	IF NOT EXISTS (SELECT 1 FROM Country WHERE is_active = 1 AND name = @Name)
 	BEGIN
+	
 		BEGIN TRANSACTION;
 			
 		UPDATE Country
@@ -232,14 +227,18 @@ BEGIN
 			
 		IF (SELECT COUNT(id) FROM Country WHERE is_active = 1 AND name = @Name) > 1
 		BEGIN
+		
 			ROLLBACK TRANSACTION;
 			SELECT 'There already is a country with this name';
+			
 		END
 	
 		ELSE
 		BEGIN
+		
 			COMMIT TRANSACTION;
 			SELECT 'Success';
+			
 		END
 	END
 	
@@ -260,17 +259,14 @@ CREATE PROCEDURE CreateCategory
 	@Name NVARCHAR(64)
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Category
-		WHERE is_active = 1
-			AND name = @Name
-	)
+	IF NOT EXISTS (SELECT 1 FROM Category WHERE is_active = 1 AND name = @Name)
 	BEGIN
+	
 		INSERT INTO Category (name)
 		VALUES (@Name);
 		
 		SELECT 'Success';
+		
 	END
 	
 	ELSE BEGIN SELECT 'There already is a category with this name'; END
@@ -281,19 +277,23 @@ CREATE PROCEDURE DeleteCategory
 	@ID INT
 AS
 BEGIN 
-	IF EXISTS (
-		SELECT 1
-		FROM Category
-		WHERE is_active = 1
-			AND id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM Category WHERE is_active = 1 AND id = @ID)
 	BEGIN
-		UPDATE Category
-		SET is_active = 0
-		WHERE is_active = 1
-			AND id = @ID;
+	
+		IF NOT EXISTS (SELECT 1 FROM Product WHERE id_category = @ID)
+		BEGIN
 		
-		SELECT 'Success';
+			UPDATE Category
+			SET is_active = 0
+			WHERE is_active = 1
+				AND id = @ID;
+		
+			SELECT 'Success';
+			
+		END
+		
+		ELSE BEGIN SELECT 'There is at least 1 active product in this category'; END
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no category with this ID'; END
@@ -305,13 +305,9 @@ CREATE PROCEDURE EditCategory
 	@Name NVARCHAR(64)
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM Category
-		WHERE is_active = 1 
-			AND id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM Category WHERE is_active = 1 AND id = @ID)
 	BEGIN
+	
 		BEGIN TRANSACTION;
 		
 		UPDATE Category
@@ -321,15 +317,20 @@ BEGIN
 			
 		IF (SELECT COUNT(id) FROM Category WHERE is_active = 1 AND name = @Name) > 1
 		BEGIN
+		
 			ROLLBACK TRANSACTION;
 			SELECT 'There already is a category with this name';
+			
 		END
 		
 		ELSE
 		BEGIN
+		
 			SELECT 'Success';
 			COMMIT TRANSACTION;
+			
 		END
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no category with this ID'; END
@@ -350,17 +351,14 @@ CREATE PROCEDURE CreateProducer
 	@CountryID INT
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Producer
-		WHERE is_active = 1
-			AND name = @Name
-	)
+	IF NOT EXISTS (SELECT 1 FROM Producer WHERE is_active = 1 AND name = @Name)
 	BEGIN
+	
 		INSERT INTO Producer (name, id_country)
 		VALUES (@Name, @CountryID);
 		
 		SELECT 'Success';
+		
 	END
 		
 	ELSE BEGIN SELECT 'There already is a producer with this name'; END
@@ -373,13 +371,9 @@ CREATE PROCEDURE EditProducer
 	@CountryID INT
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM Producer
-		WHERE is_active = 1
-			AND id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM Producer WHERE is_active = 1 AND id = @ID)
 	BEGIN
+	
 		BEGIN TRANSACTION;
 		
 		UPDATE Producer 
@@ -389,15 +383,20 @@ BEGIN
 			
 		IF (SELECT COUNT(id) FROM Producer WHERE is_active = 1 AND name = @Name) > 1
 		BEGIN
+		
 			ROLLBACK TRANSACTION;
-			SELECT 'There already is a producer with this name';			
+			SELECT 'There already is a producer with this name';	
+			
 		END
 		
 		ELSE
 		BEGIN
+		
 			SELECT 'Success';
 			COMMIT TRANSACTION;
+			
 		END		
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no producer with this ID'; END
@@ -408,22 +407,26 @@ CREATE PROCEDURE DeleteProducer
 	@ID INT
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM Producer
-		WHERE is_active = 1 AND id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM Producer WHERE is_active = 1 AND id = @ID)
 	BEGIN
-		UPDATE Producer 
-		SET is_active = 0
-		WHERE is_active = 1
-			AND id = @ID;
+	
+		IF NOT EXISTS (SELECT 1 FROM Product WHERE is_active = 1 AND id_producer = @ID)
+		BEGIN
+		
+			UPDATE Producer
+			SET is_active = 0
+			WHERE is_active = 1
+				AND id = @ID;
+				
+			SELECT 'Success';
 			
-		SELECT 'Success';
+		END
+		
+		ELSE BEGIN SELECT 'There is an active stock provided by this producer'; END
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no producer with this ID'; END
-
 END;
 GO
 
@@ -443,17 +446,14 @@ CREATE PROCEDURE CreateProduct
 	@ProducerID INT
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Product
-		WHERE is_active = 1
-			AND (name = @Name OR barcode = @Barcode)
-	)
+	IF NOT EXISTS (SELECT 1 FROM Product WHERE is_active = 1 AND (name = @Name OR barcode = @Barcode))
 	BEGIN
+	
 		INSERT INTO Product (name, barcode, id_category, id_producer)
 		VALUES (@Name, @Barcode, @CategoryID, @ProducerID);
 		
 		SELECT 'Success';
+		
 	END
 	
 	ELSE BEGIN SELECT 'There already is a product with this name or this barcode'; END
@@ -477,20 +477,26 @@ BEGIN
 		
 	IF (SELECT COUNT(id) FROM Product WHERE is_active = 1 AND name = @Name) > 1
 	BEGIN
+	
 		ROLLBACK TRANSACTION;
 		SELECT 'There already is a product with this name';
+		
 	END
 	
 	IF (SELECT COUNT(id) FROM Product WHERE is_active = 1 AND barcode = @Barcode) > 1
 	BEGIN
+	
 		ROLLBACK TRANSACTION;
 		SELECT 'There already is a product with this barcode';
+		
 	END
 	
 	ELSE
 	BEGIN
+	
 		SELECT 'Success';
 		COMMIT TRANSACTION;
+		
 	END
 END;
 GO
@@ -499,20 +505,22 @@ CREATE PROCEDURE DeleteProduct
 	@ID INT
 AS
 BEGIN
-	IF NOT EXISTS (
-		SELECT 1
-		FROM Product
-		JOIN Stock ON Stock.id_product = Product.id
-		WHERE Product.is_active = 1
-			AND Stock.is_active = 1
-			AND Product.id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM Product WHERE is_active = 1 AND id = @ID)
 	BEGIN
-		UPDATE Product
-		SET Product.is_active = 0
-		WHERE Product.id = @ID;
+	
+		IF NOT EXISTS (SELECT 1 FROM Stock WHERE is_active = 1 AND id_product = @ID)
+		BEGIN
 		
-		SELECT 'Success';
+			UPDATE Product
+			SET Product.is_active = 0
+			WHERE Product.id = @ID;
+			
+			SELECT 'Success';
+			
+		END
+		
+		ELSE BEGIN SELECT ''; END
+		
 	END
 	
 	ELSE BEGIN SELECT 'There currently is an active stock with this product'; END
@@ -538,24 +546,8 @@ CREATE PROCEDURE AddNewStock
 	@SellingPrice DECIMAL(12, 2)
 AS
 BEGIN
-    INSERT INTO Stock (
-		id_product,
-		quantity,
-		initial_quantity,
-		unit, 
-		supply_date,
-		expiration_date, 
-		purchase_price,
-		selling_price)
-	VALUES (
-		@ProductID,
-		@Quantity,
-		@Quantity,
-		@Unit,
-		@SupplyDate,
-		@ExpirationDate,
-		@PurchasePrice,
-		@SellingPrice);
+    INSERT INTO Stock (id_product, quantity, initial_quantity, unit,  supply_date, expiration_date,  purchase_price,selling_price)
+	VALUES (@ProductID, @Quantity, @Quantity, @Unit, @SupplyDate, @ExpirationDate, @PurchasePrice, @SellingPrice);
 		
 	SELECT 'Success';
 END;
@@ -585,17 +577,15 @@ CREATE PROCEDURE DeleteStock
 	@ID INT
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM Stock
-		WHERE is_active = 1 AND id = @id
-	)
+	IF EXISTS (SELECT 1 FROM Stock WHERE is_active = 1 AND id = @id)
 	BEGIN
+	
 		UPDATE Stock
 		SET is_active = 0
 		WHERE id = @ID;
 		
 		SELECT 'Success';
+		
 	END
 	
 	ELSE BEGIN SELECT 'There is no stock with this ID'; END
@@ -614,20 +604,29 @@ CREATE PROCEDURE EditStock
 	@SellingPrice DECIMAL(12, 2)
 AS
 BEGIN
-	IF EXISTS (
-		SELECT 1
-		FROM Stock
-		WHERE is_active = 1
-			AND id = @ID
-	)
+	IF EXISTS (SELECT 1 FROM Stock WHERE is_active = 1 AND id = @ID)
 	BEGIN
+	
 		UPDATE Stock
 		SET id_product = @ProductID, quantity = @Quantity, initial_quantity = @InitialQuantity, unit = @Unit, supply_date = @SupplyDate, expiration_date = @ExpirationDate, purchase_price = @PurchasePrice, selling_price = @SellingPrice
 		WHERE is_active = 1 AND id = @ID;
 		
 		SELECT 'Success';
+		
 	END
+	
 	ELSE BEGIN SELECT 'There is no active stock with this ID'; END
+END;
+GO
+
+CREATE PROCEDURE InvalidateExpiredStocks
+AS
+BEGIN
+	UPDATE stock
+	SET is_active = 0
+	WHERE expiration_date < GETDATE();
+	
+	SELECT 'Success';
 END;
 GO
 
@@ -665,6 +664,16 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE GetLastReceipt
+AS
+BEGIN
+	SELECT TOP 1 id, issue_date, id_cashier, total_price
+	FROM Receipt
+	WHERE is_active = 1
+	ORDER BY issue_date DESC;
+END;
+GO
+
 CREATE PROCEDURE GetLargestReceipt
 	@SelectedDate DATE
 AS
@@ -674,19 +683,21 @@ BEGIN
 	WHERE is_active = 1
 		AND issue_date = @SelectedDate
 	ORDER BY total_price DESC;
-END
+END;
+GO
 
 CREATE PROCEDURE CreateReceipt
 	@IssueDate DATE,
 	@CashierID INT,
-	@TotalPrice DECIMAL
+	@TotalPrice DECIMAL(12, 2)
 AS
 BEGIN
 	INSERT INTO Receipt (issue_date, id_cashier, total_price)
 	VALUES (@IssueDate, @CashierID, @TotalPrice);
 	
 	SELECT 'Success';
-END
+END;
+GO
 
 CREATE PROCEDURE GetReceiptItems
 	@ReceiptID INT
@@ -698,3 +709,16 @@ BEGIN
 		AND id_receipt = @ReceiptID;
 END;
 GO
+
+CREATE PROCEDURE CreateReceiptItem
+	@ReceiptID INT,
+	@ProductID INT,
+	@Quantity INT,
+	@TotalPrice DECIMAL(12, 2)
+AS
+BEGIN
+	INSERT INTO ReceiptItem (id_receipt, id_product, quantity, total_price)
+	VALUES (@ReceiptID, @ProductID, @Quantity, @TotalPrice);
+	
+	SELECT 'Success';
+END

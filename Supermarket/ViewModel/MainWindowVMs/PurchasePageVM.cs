@@ -4,15 +4,17 @@ using Supermarket.Utilities;
 using Supermarket.ViewModel.Commands;
 using Supermarket.ViewModel.DataVM;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Remoting.Proxies;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Supermarket.ViewModel.MainWindowVMs
 {
 	internal class PurchasePageVM : BaseVM
 	{
+		private List<StockVM> Stocks { get; set; }
+
 		#region Properties
 
 		private ReceiptVM _receipt;
@@ -136,12 +138,19 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			{
 				_quantity = value;
 				OnPropertyChanged(nameof(Quantity));
-				Subtotal = Quantity.ToString();
+				try
+				{
+					Subtotal = CalculateSubtotal().Item1;
+				}
+				catch (ApplicationException)
+				{
+					Subtotal = 0;
+				}
 			}
 		}
 
-		private string _subtotal;
-		public string Subtotal
+		private decimal _subtotal;
+		public decimal Subtotal
 		{
 			get { return _subtotal; }
 			set
@@ -158,7 +167,9 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 		public PurchasePageVM()
 		{
+			Stocks = StocksBL.GetAllStocks().OrderBy((s) => s.SupplyDate).ToList();
 			Receipt = new ReceiptVM();
+
 			_doFilter = false;
 			ResetReceiptItem();
 			_doFilter = true;
@@ -171,14 +182,14 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		{
 			if (!Functions.AreNotNullOrEmpty(ProductName, Barcode))
 			{
-				Functions.LogError("The product name cannot be empty");
+				Functions.LogError("The product name and barcode cannot be empty");
 				return;
 			}
 
 			var productModel = Cache.Instance.Products.Find((p) => p.Name == ProductName && p.Barcode == Barcode);
 			if (productModel == null)
 			{
-				Functions.LogError("The product does not exist");
+				Functions.LogError($"The product ( {ProductName} ) does not exist or the barcode ( {Barcode} ) is incorrect");
 				return;
 			}
 
@@ -197,6 +208,20 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			}
 
 			ReceiptItem.Product = new ProductVM(productModel.ID, ProductName, Barcode, categoryVM, producerVM);
+			ReceiptItem.Quantity = Quantity;
+
+			try
+			{
+				var subtotalTuple = CalculateSubtotal();
+				ReceiptItem.TotalPrice = subtotalTuple.Item1;
+				Stocks = subtotalTuple.Item2;
+			}
+			catch (ApplicationException e)
+			{
+				Functions.LogError(e.Message);
+				return;
+			}
+
 			Receipt.Items.Add(ReceiptItem);
 			ResetReceiptItem();
 		}
@@ -206,6 +231,15 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			if (Receipt.Items.Count == 0)
 			{
 				Functions.LogError("The receipt must have at least one item");
+				return;
+			}
+
+			Receipt.Cashier = LocalStorage.CurrentUser;
+			Receipt.TotalPrice = Receipt.Items.Sum((i) => i.TotalPrice);
+
+			if (Receipt.TotalPrice <= 0)
+			{
+				Functions.LogError("The total price must be greater than 0");
 				return;
 			}
 
@@ -223,6 +257,41 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			ProductName = string.Empty;
 			Barcode = string.Empty;
 			Quantity = 0;
+		}
+
+		private (decimal, List<StockVM>) CalculateSubtotal()
+		{
+			List<StockVM> stocksCopy = new List<StockVM>(Stocks.Count);
+			foreach (var stock in Stocks)
+			{
+				stocksCopy.Add(new StockVM(stock));
+			}
+
+			decimal subtotal = 0;
+
+			for (int quantityObtained = 0; quantityObtained < Quantity; /* empty */)
+			{
+				var stock = stocksCopy.Find((s) => s.Product.Name == ProductName && s.Product.Barcode == Barcode && s.Quantity > 0);
+
+				if (stock == null)
+				{
+					if (quantityObtained == 0)
+					{
+						throw new ApplicationException($"There is no product ( {ProductName} ) in stock");
+					}
+					else
+					{
+						throw new ApplicationException($"There are not enough products of type ( {ProductName} ) in stock. Number of products needed = ( {Quantity} ). Number of products available = ( {quantityObtained} )");
+					}
+				}
+
+				int quantity = Math.Min(Quantity - quantityObtained, stock.Quantity);
+				quantityObtained += quantity;
+				stock.Quantity -= quantity;
+				subtotal += quantity * stock.SellingPrice;
+			}
+
+			return (subtotal, stocksCopy);
 		}
 	}
 }

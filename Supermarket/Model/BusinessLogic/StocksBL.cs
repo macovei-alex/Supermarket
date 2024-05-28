@@ -32,6 +32,7 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.Stock);
 			return true;
 		}
 
@@ -44,6 +45,7 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.Stock);
 			return true;
 		}
 
@@ -56,7 +58,13 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			Cache.Instance.Invalidate(Cache.CacheType.Stock);
 			return true;
+		}
+
+		public static bool InvalidateExpiredStocks()
+		{
+			return StockDAL.InvalidateExpiredStocks() == Cache.Instance.SuccessMessage;
 		}
 	}
 }

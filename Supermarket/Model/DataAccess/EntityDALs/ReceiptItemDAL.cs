@@ -3,7 +3,6 @@ using Supermarket.Utilities;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Media.Animation;
 
 namespace Supermarket.Model.DataAccess.EntityDALs
 {

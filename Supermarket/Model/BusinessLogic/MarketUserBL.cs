@@ -1,15 +1,8 @@
 ﻿using Supermarket.Model.DataAccess.EntityDALs;
-using Supermarket.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Supermarket.Exceptions;
-using Supermarket.Utilities;
-using System.Collections.ObjectModel;
 using Supermarket.Model.Entities;
+using Supermarket.Utilities;
 using Supermarket.ViewModel.DataVM;
+using System.Collections.ObjectModel;
 
 namespace Supermarket.Model.BusinessLogic
 {
@@ -31,6 +24,16 @@ namespace Supermarket.Model.BusinessLogic
 			return usersVM;
 		}
 
+		public static ObservableCollection<MarketUserVM> GetActiveUsers()
+		{
+			var usersVM = new ObservableCollection<MarketUserVM>();
+			foreach (MarketUser userModel in MarketUserDAL.GetActiveUsers())
+			{
+				usersVM.Add(new MarketUserVM(userModel));
+			}
+			return usersVM;
+		}
+
 		public static bool CreateUser(string name, string password, bool isAdmin)
 		{
 			string message = MarketUserDAL.CreateUser(name, Functions.HashString(password), isAdmin ? Cache.Instance.AdminID : Cache.Instance.CashierID);
@@ -41,6 +44,7 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
+			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 
@@ -54,6 +58,7 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
+			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 
@@ -67,6 +72,7 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
+			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 
@@ -85,6 +91,7 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
+			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 	}

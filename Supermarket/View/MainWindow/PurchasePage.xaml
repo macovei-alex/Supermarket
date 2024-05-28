@@ -20,6 +20,7 @@
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 
 				<WrapPanel Grid.Row="0" HorizontalAlignment="Left">
@@ -38,17 +39,23 @@
 					</StackPanel>
 				</WrapPanel>
 
-				<DataGrid Grid.Row="1" ItemsSource="{Binding Receipt.Items, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DefaultDataGridStyle}">
+				<Button Grid.Row="1" Content="Add item" Command="{Binding AddItemCommand}" Style="{StaticResource DefaultButtonStyle}" HorizontalAlignment="Left"/>
+
+				<DataGrid Grid.Row="2" ItemsSource="{Binding Receipt.Items, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DefaultDataGridStyle}" Height="200">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="Product name" Binding="{Binding Product.Name}"/>
 						<DataGridTextColumn Header="Product barcode" Binding="{Binding Product.Barcode}"/>
+						<DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
+						<DataGridTextColumn Header="Subtotal" Binding="{Binding TotalPrice}"/>
 					</DataGrid.Columns>
 				</DataGrid>
 
-				<WrapPanel Grid.Row="2" HorizontalAlignment="Left">
+				<WrapPanel Grid.Row="3" HorizontalAlignment="Left">
 					<TextBlock Text="Total: " Style="{StaticResource DefaultTextBlockStyle}"/>
 					<TextBlock Text="{Binding Receipt.TotalPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DefaultTextBlockStyle}"/>
 				</WrapPanel>
+
+				<Button Grid.Row="4" Content="Save receipt" Command="{Binding SaveReceiptCommand}" Style="{StaticResource DefaultButtonStyle}" HorizontalAlignment="Left"/>
 			</Grid>
 		</DockPanel>
 	</ScrollViewer>

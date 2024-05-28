@@ -14,7 +14,9 @@ namespace Supermarket.Model
 			Category,
 			Producer,
 			Product,
-			User
+			ActiveUser,
+			User,
+			Stock
 		}
 
 		public static Cache Instance { get; } = new Cache();
@@ -103,6 +105,34 @@ namespace Supermarket.Model
 			private set { _users = value; }
 		}
 
+		private List<MarketUser> _activeUsers;
+		public List<MarketUser> ActiveUsers
+		{
+			get
+			{
+				if (_activeUsers == null)
+				{
+					LoadList(CacheType.ActiveUser);
+				}
+				return _activeUsers;
+			}
+			private set { _activeUsers = value; }
+		}
+
+		private List<Stock> _stocks;
+		public List<Stock> Stocks
+		{
+			get
+			{
+				if (_stocks == null)
+				{
+					LoadList(CacheType.Stock);
+				}
+				return _stocks;
+			}
+			private set { _stocks = value; }
+		}
+
 		public decimal VAT { get; } = decimal.Parse(ConfigurationManager.AppSettings["VAT"]);
 		public string AdminStr { get; } = "administrator";
 		public string CashierStr { get; } = "cashier";
@@ -143,6 +173,14 @@ namespace Supermarket.Model
 					_users = MarketUserDAL.GetAllUsers();
 					break;
 
+				case CacheType.ActiveUser:
+					_activeUsers = MarketUserDAL.GetActiveUsers();
+					break;
+
+				case CacheType.Stock:
+					_stocks = StockDAL.GetAllStocks();
+					break;
+
 				default:
 					break;
 			}
@@ -174,6 +212,14 @@ namespace Supermarket.Model
 
 				case CacheType.User:
 					_users = null;
+					break;
+
+				case CacheType.ActiveUser:
+					_activeUsers = null;
+					break;
+
+				case CacheType.Stock:
+					_stocks = null;
 					break;
 
 				default:

@@ -1,14 +1,8 @@
 ﻿using Supermarket.Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Supermarket.Utilities;
-using Supermarket.ViewModel;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace Supermarket.Model.DataAccess.EntityDALs
 {
@@ -21,6 +15,29 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 			{
 				CommandType = CommandType.StoredProcedure,
 				CommandText = nameof(GetAllUsers),
+				Connection = connection,
+			})
+			{
+				List<MarketUser> users = new List<MarketUser>();
+				connection.Open();
+				using (SqlDataReader reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						users.Add(new MarketUser(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3)));
+					}
+					return users;
+				}
+			}
+		}
+
+		public static List<MarketUser> GetActiveUsers()
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(GetActiveUsers),
 				Connection = connection,
 			})
 			{

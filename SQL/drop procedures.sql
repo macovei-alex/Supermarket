@@ -1,6 +1,7 @@
 USE Supermarket;
 
 DROP PROCEDURE GetAllUsers;
+DROP PROCEDURE GetActiveUsers;
 DROP PROCEDURE FindUser;
 DROP PROCEDURE GetUserID;
 DROP PROCEDURE CreateUser;
@@ -29,8 +30,11 @@ DROP PROCEDURE AddNewStock;
 DROP PROCEDURE AddNewStockToday;
 DROP PROCEDURE DeleteStock;
 DROP PROCEDURE EditStock;
+DROP PROCEDURE InvalidateExpiredStocks;
 DROP PROCEDURE GetProductsValueFiltered;
 DROP PROCEDURE GetReceiptsFiltered;
 DROP PROCEDURE GetLargestReceipt;
+DROP PROCEDURE GetLastReceipt;
 DROP PROCEDURE CreateReceipt
 DROP PROCEDURE GetReceiptItems;
+DROP PROCEDURE CreateReceiptItem;

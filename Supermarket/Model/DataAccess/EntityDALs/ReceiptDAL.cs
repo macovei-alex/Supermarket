@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace Supermarket.Model.DataAccess.EntityDALs
 {
@@ -79,6 +78,29 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 			{
 				connection.Open();
 				return Functions.SqlCallWrapper(() => command.ExecuteScalar());
+			}
+		}
+
+		public static Receipt GetLastReceipt()
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				Connection = connection,
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(GetLastReceipt),
+			})
+			{
+				connection.Open();
+				using (SqlDataReader reader = command.ExecuteReader())
+				{
+					if (reader.Read())
+					{
+						return new Receipt(reader);
+					}
+
+					return null;
+				}
 			}
 		}
 	}

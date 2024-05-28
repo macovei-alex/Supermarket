@@ -2,8 +2,6 @@
 using Supermarket.Model.Entities;
 using Supermarket.Utilities;
 using Supermarket.ViewModel.DataVM;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Supermarket.Model.BusinessLogic
