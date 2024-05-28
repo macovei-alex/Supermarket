@@ -61,7 +61,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				{
 					_doFilter = false;
 
-					var exactProduct = Cache.Instance.Products.Find((p) => p.Name == ProductName);
+					var exactProduct = Cache.Instance.ActiveProducts.Find((p) => p.Name == ProductName);
 					if (exactProduct != null)
 					{
 						Barcode = exactProduct.Barcode;
@@ -69,7 +69,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 					else
 					{
-						var product = Cache.Instance.Products.Find((p) => p.Name.Contains(ProductName));
+						var product = Cache.Instance.ActiveProducts.Find((p) => p.Name.Contains(ProductName));
 						if (product != null)
 						{
 							Barcode = product.Barcode;
@@ -106,7 +106,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				{
 					_doFilter = false;
 
-					var exactProduct = Cache.Instance.Products.Find((p) => p.Barcode == Barcode);
+					var exactProduct = Cache.Instance.ActiveProducts.Find((p) => p.Barcode == Barcode);
 					if (exactProduct != null)
 					{
 						ProductName = exactProduct.Name;
@@ -114,7 +114,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 
 					else
 					{
-						var product = Cache.Instance.Products.Find((p) => p.Barcode.Contains(Barcode));
+						var product = Cache.Instance.ActiveProducts.Find((p) => p.Barcode.Contains(Barcode));
 						if (product != null)
 						{
 							ProductName = product.Name;
@@ -186,7 +186,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				return;
 			}
 
-			var productModel = Cache.Instance.Products.Find((p) => p.Name == ProductName && p.Barcode == Barcode);
+			var productModel = Cache.Instance.ActiveProducts.Find((p) => p.Name == ProductName && p.Barcode == Barcode);
 			if (productModel == null)
 			{
 				Functions.LogError($"The product ( {ProductName} ) does not exist or the barcode ( {Barcode} ) is incorrect");

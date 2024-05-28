@@ -137,7 +137,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 			Employees = MarketUserBL.GetActiveUsers();
 			SelectedEmployeeCopy = null;
 			StartDate = DateTime.Today;
-			EndDate = DateTime.Today;
+			EndDate = DateTime.Today + TimeSpan.FromDays(1);
 			LargestReceipt = null;
 
 			_doUpdateStatistics = true;

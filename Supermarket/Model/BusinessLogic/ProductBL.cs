@@ -65,7 +65,7 @@ namespace Supermarket.Model.BusinessLogic
 
 		public static bool EditProduct(string oldName, string name, string barcode, string categoryName, string producerName)
 		{
-			var product = Cache.Instance.Products.Find((p) => p.Name == oldName);
+			var product = Cache.Instance.ActiveProducts.Find((p) => p.Name == oldName);
 			if (product == null)
 			{
 				Functions.LogError($"There is no product with name ( {oldName} ).");
@@ -117,7 +117,7 @@ namespace Supermarket.Model.BusinessLogic
 
 		public static bool DeleteProduct(string name)
 		{
-			var product = Cache.Instance.Products.Find((p) => p.Name == name);
+			var product = Cache.Instance.ActiveProducts.Find((p) => p.Name == name);
 			if (product == null)
 			{
 				Functions.LogError($"There is no product with name ( {name} ).");

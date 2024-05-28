@@ -22,6 +22,7 @@ DROP PROCEDURE CreateProducer;
 DROP PROCEDURE DeleteProducer;
 DROP PROCEDURE EditProducer;
 DROP PROCEDURE GetAllProducts;
+DROP PROCEDURE GetActiveProducts;
 DROP PROCEDURE CreateProduct;
 DROP PROCEDURE EditProduct;
 DROP PROCEDURE DeleteProduct;
@@ -35,6 +36,7 @@ DROP PROCEDURE GetProductsValueFiltered;
 DROP PROCEDURE GetReceiptsFiltered;
 DROP PROCEDURE GetLargestReceipt;
 DROP PROCEDURE GetLastReceipt;
+DROP PROCEDURE GetAllReceipts;
 DROP PROCEDURE CreateReceipt
 DROP PROCEDURE GetReceiptItems;
 DROP PROCEDURE CreateReceiptItem;

@@ -41,19 +41,21 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
+		
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+		<WrapPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20">
 			<TextBlock Text="Login as: " Style="{StaticResource DefaultTextBlockStyle}"/>
 			<Button Name="AdminButton" Content="Administrator" Style="{StaticResource DefaultButtonStyle}" Background="{Binding LoginAsAdmin, Converter={StaticResource AdminButtonBackgroundConverter}, UpdateSourceTrigger=PropertyChanged}" Command="{Binding SetLoginModeCommand}" CommandParameter="administrator"/>
 			<Button Name="CashierButton" Content="Cashier" Style="{StaticResource DefaultButtonStyle}" Background="{Binding LoginAsAdmin, Converter={StaticResource CashierButtonBackgroundConverter}, UpdateSourceTrigger=PropertyChanged}" Command="{Binding SetLoginModeCommand}" CommandParameter="cashier"/>
-		</StackPanel>
+		</WrapPanel>
 
-		<Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+		<Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
@@ -68,8 +70,8 @@
 
 			<TextBlock Grid.Row="1" Grid.Column="0" Text="Password: " Style="{StaticResource DefaultTextBlockStyle}"/>
 			<TextBox Grid.Row="1" Grid.Column="1" Name="PasswordTextBox" Text="{Binding Password}" Style="{StaticResource DefaultTextBoxStyle}"/>
-		</Grid>
 
-		<Button Name="LoginButton" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Login" Style="{StaticResource DefaultButtonStyle}" Command="{Binding LoginCommand}" Width="Auto" Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10, 5, 10, 20"/>
+			<Button Name="LoginButton" Grid.Row="2" Grid.Column="1" Content="Login" Style="{StaticResource DefaultButtonStyle}" Command="{Binding LoginCommand}"/>
+		</Grid>
 	</Grid>
 </Page>

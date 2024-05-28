@@ -32,6 +32,17 @@ namespace Supermarket.Model.BusinessLogic
 			return null;
 		}
 
+		public static ObservableCollection<ReceiptVM> GetAllReceipts()
+		{
+			var receipts = new ObservableCollection<ReceiptVM>();
+			foreach (var receipt in ReceiptDAL.GetAllReceipts())
+			{
+				var items = ReceiptItemDAL.GetReceiptItems(receipt.ID);
+				receipts.Add(new ReceiptVM(receipt, items));
+			}
+			return receipts;
+		}
+
 		public static bool CreateReceipt(ReceiptVM receipt)
 		{
 			if (receipt == null)
@@ -40,14 +51,14 @@ namespace Supermarket.Model.BusinessLogic
 				return false;
 			}
 
+			if (ReceiptDAL.CreateReceipt(receipt.IssueDate, receipt.Cashier.ID, receipt.TotalPrice) != Cache.Instance.SuccessMessage)
+			{
+				Functions.LogError("The receipt could not be created");
+				return false;
+			}
+
 			using (TransactionScope transaction = new TransactionScope())
 			{
-				if (ReceiptDAL.CreateReceipt(receipt.IssueDate, receipt.Cashier.ID, receipt.TotalPrice) != Cache.Instance.SuccessMessage)
-				{
-					Functions.LogError("The receipt could not be created");
-					return false;
-				}
-
 				var receiptModel = ReceiptDAL.GetLastReceipt();
 				foreach (var item in receipt.Items)
 				{

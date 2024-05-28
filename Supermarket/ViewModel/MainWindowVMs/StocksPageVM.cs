@@ -116,7 +116,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				return false;
 			}
 
-			var product = Cache.Instance.Products.Find((p) => p.Name == SelectedStockCopy.Product.Name);
+			var product = Cache.Instance.ActiveProducts.Find((p) => p.Name == SelectedStockCopy.Product.Name);
 			if (product == null)
 			{
 				Functions.LogError($"There is no product with name ( {SelectedStockCopy.Product.ID} )");
@@ -168,7 +168,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				return;
 			}
 
-			SelectedStockCopy.Product = new ProductVM(Cache.Instance.Products.Find((p) => p.Name == SelectedStockCopy.Product.Name));
+			SelectedStockCopy.Product = new ProductVM(Cache.Instance.ActiveProducts.Find((p) => p.Name == SelectedStockCopy.Product.Name));
 			if (StocksBL.CreateStock(SelectedStockCopy))
 			{
 				Functions.LogError("Stock created successfully");

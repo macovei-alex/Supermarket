@@ -103,5 +103,28 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 				}
 			}
 		}
+
+		public static List<Receipt> GetAllReceipts()
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				Connection = connection,
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(GetAllReceipts),
+			})
+			{
+				List<Receipt> receipts = new List<Receipt>();
+				connection.Open();
+				using (SqlDataReader reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						receipts.Add(new Receipt(reader));
+					}
+					return receipts;
+				}
+			}
+		}
 	}
 }

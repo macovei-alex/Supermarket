@@ -54,7 +54,12 @@ namespace Supermarket.ViewModel.DataVM
 			{
 				items.Append(item.ToString()).Append(", ");
 			}
-			items.Remove(items.Length - 2, 2);
+
+			if (items.Length > 2)
+			{
+				items.Remove(items.Length - 2, 2);
+			}
+
 			return $"{nameof(ReceiptVM)}{{ ID: {ID}, IssueDate: {IssueDate}, Cashier: {Cashier}, TotalPrice: {TotalPrice}, Items: {items} }}";
 		}
 	}

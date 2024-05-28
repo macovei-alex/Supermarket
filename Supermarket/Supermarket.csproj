@@ -123,6 +123,7 @@
     <Compile Include="ViewModel\MainWindowVMs\PurchasePageVM.cs" />
     <Compile Include="ViewModel\MainWindowVMs\StocksPageVM.cs" />
     <Compile Include="ViewModel\MainWindowVMs\UsersPageVM.cs" />
+    <Compile Include="ViewModel\MainWindowVMs\ViewReceiptsPageVM.cs" />
     <Compile Include="View\InputWindow.xaml.cs">
       <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
@@ -140,6 +141,9 @@
     </Compile>
     <Compile Include="View\MainWindow\UsersPage.xaml.cs">
       <DependentUpon>UsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow\ViewReceiptsPage.xaml.cs">
+      <DependentUpon>ViewReceiptsPage.xaml</DependentUpon>
     </Compile>
     <Page Include="View\InputWindow.xaml">
       <SubType>Designer</SubType>
@@ -209,6 +213,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\MainWindow\UsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow\ViewReceiptsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

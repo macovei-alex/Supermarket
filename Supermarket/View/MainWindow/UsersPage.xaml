@@ -44,7 +44,7 @@
 					</StackPanel>
 				</WrapPanel>
 
-				<DataGrid Grid.Row="2" x:Name="UsersDataGrid" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedUser}" Style="{StaticResource DefaultDataGridStyle}">
+				<DataGrid Grid.Row="2" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedUser}" Style="{StaticResource DefaultDataGridStyle}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="Username" Binding="{Binding Name}" MinWidth="200"/>
 						<DataGridTextColumn Header="Role" Binding="{Binding Type}" MinWidth="200"/>

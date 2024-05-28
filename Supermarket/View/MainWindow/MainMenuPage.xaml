@@ -19,6 +19,7 @@
 			<Button Content="Stocks" Style="{StaticResource DefaultButtonStyle}" Command="{Binding StocksCommand}"/>
 			<Button Content="Employee Statistics" Style="{StaticResource DefaultButtonStyle}" Command="{Binding EmployeeStatisticsCommand}"/>
 			<Button Content="New Receipt" Style="{StaticResource DefaultButtonStyle}" Command="{Binding NewReceiptCommand}"/>
+			<Button Content="View Receipts" Style="{StaticResource DefaultButtonStyle}" Command="{Binding ViewReceiptsCommand}"/>
 		</StackPanel>
 	</Grid>
 </Page>

@@ -11,6 +11,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 		public ICommand StocksCommand { get; }
 		public ICommand EmployeeStatisticsCommand { get; }
 		public ICommand NewReceiptCommand { get; }
+		public ICommand ViewReceiptsCommand { get; }
 
 		public MainMenuPageVM()
 		{
@@ -27,6 +28,8 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				() => LocalStorage.CurrentUser.IsAdmin);
 
 			NewReceiptCommand = new RelayCommandVoid(() => LocalStorage.WindowVM.ChangePage(nameof(PurchasePage)));
+
+			ViewReceiptsCommand = new RelayCommandVoid(() => LocalStorage.WindowVM.ChangePage(nameof(ViewReceiptsPage)));
 		}
 	}
 }

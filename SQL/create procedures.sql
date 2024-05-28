@@ -434,6 +434,14 @@ CREATE PROCEDURE GetAllProducts
 AS
 BEGIN
 	SELECT id, name, barcode, id_category, id_producer
+	FROM Product;
+END;
+GO
+
+CREATE PROCEDURE GetActiveProducts
+AS
+BEGIN
+	SELECT id, name, barcode, id_category, id_producer
 	FROM Product
 	WHERE is_active = 1;
 END;
@@ -507,19 +515,12 @@ AS
 BEGIN
 	IF EXISTS (SELECT 1 FROM Product WHERE is_active = 1 AND id = @ID)
 	BEGIN
-	
-		IF NOT EXISTS (SELECT 1 FROM Stock WHERE is_active = 1 AND id_product = @ID)
-		BEGIN
 		
-			UPDATE Product
-			SET Product.is_active = 0
-			WHERE Product.id = @ID;
-			
-			SELECT 'Success';
-			
-		END
+		UPDATE Product
+		SET Product.is_active = 0
+		WHERE Product.id = @ID;
 		
-		ELSE BEGIN SELECT ''; END
+		SELECT 'Success';
 		
 	END
 	
@@ -670,7 +671,7 @@ BEGIN
 	SELECT TOP 1 id, issue_date, id_cashier, total_price
 	FROM Receipt
 	WHERE is_active = 1
-	ORDER BY issue_date DESC;
+	ORDER BY id DESC;
 END;
 GO
 
@@ -683,6 +684,16 @@ BEGIN
 	WHERE is_active = 1
 		AND issue_date = @SelectedDate
 	ORDER BY total_price DESC;
+END;
+GO
+
+CREATE PROCEDURE GetAllReceipts
+AS
+BEGIN
+	SELECT id, issue_date, id_cashier, total_price
+	FROM Receipt
+	WHERE is_active = 1
+	ORDER BY issue_date DESC;
 END;
 GO
 

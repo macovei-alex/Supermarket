@@ -14,7 +14,6 @@ namespace Supermarket.Model
 			Category,
 			Producer,
 			Product,
-			ActiveUser,
 			User,
 			Stock
 		}
@@ -77,6 +76,20 @@ namespace Supermarket.Model
 			private set { Producers = value; }
 		}
 
+		private List<Product> _activeProducts;
+		public List<Product> ActiveProducts
+		{
+			get
+			{
+				if (_activeProducts == null)
+				{
+					LoadList(CacheType.Product);
+				}
+				return _activeProducts;
+			}
+			private set { Products = value; }
+		}
+
 		private List<Product> _products;
 		public List<Product> Products
 		{
@@ -112,7 +125,7 @@ namespace Supermarket.Model
 			{
 				if (_activeUsers == null)
 				{
-					LoadList(CacheType.ActiveUser);
+					LoadList(CacheType.User);
 				}
 				return _activeUsers;
 			}
@@ -167,19 +180,18 @@ namespace Supermarket.Model
 
 				case CacheType.Product:
 					_products = ProductDAL.GetAllProducts();
+					_activeProducts = ProductDAL.GetActiveProducts();
 					break;
 
 				case CacheType.User:
 					_users = MarketUserDAL.GetAllUsers();
-					break;
-
-				case CacheType.ActiveUser:
 					_activeUsers = MarketUserDAL.GetActiveUsers();
 					break;
 
 				case CacheType.Stock:
 					_stocks = StockDAL.GetAllStocks();
 					break;
+
 
 				default:
 					break;
@@ -207,15 +219,13 @@ namespace Supermarket.Model
 					break;
 
 				case CacheType.Product:
+					_activeProducts = null;
 					_products = null;
 					break;
 
 				case CacheType.User:
-					_users = null;
-					break;
-
-				case CacheType.ActiveUser:
 					_activeUsers = null;
+					_users = null;
 					break;
 
 				case CacheType.Stock:

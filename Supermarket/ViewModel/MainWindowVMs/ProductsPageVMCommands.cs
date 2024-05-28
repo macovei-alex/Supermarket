@@ -220,7 +220,7 @@ namespace Supermarket.ViewModel.MainWindowVMs
 				return;
 			}
 
-			var productModel = Cache.Instance.Products.Find((p) => p.Name == inputs[0].Value);
+			var productModel = Cache.Instance.ActiveProducts.Find((p) => p.Name == inputs[0].Value);
 			if (productModel == null)
 			{
 				Functions.LogError($"Product ( {inputs[0].Value} ) does not exist");

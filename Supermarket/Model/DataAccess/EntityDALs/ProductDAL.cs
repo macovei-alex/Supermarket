@@ -32,6 +32,29 @@ namespace Supermarket.Model.DataAccess.EntityDALs
 			}
 		}
 
+		public static List<Product> GetActiveProducts()
+		{
+			using (SqlConnection connection = DALHelper.NewConnection())
+			using (SqlCommand command = new SqlCommand
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = nameof(GetActiveProducts),
+				Connection = connection
+			})
+			{
+				connection.Open();
+				using (SqlDataReader reader = command.ExecuteReader())
+				{
+					List<Product> products = new List<Product>();
+					while (reader.Read())
+					{
+						products.Add(new Product(reader));
+					}
+					return products;
+				}
+			}
+		}
+
 		public static decimal GetProductsValueFiltered(int categoryID, int producerID)
 		{
 			using (SqlConnection connection = DALHelper.NewConnection())

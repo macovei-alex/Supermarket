@@ -44,7 +44,6 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
-			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 
@@ -58,7 +57,6 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
-			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 
@@ -72,7 +70,6 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
-			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 
@@ -91,7 +88,6 @@ namespace Supermarket.Model.BusinessLogic
 			}
 
 			Cache.Instance.Invalidate(Cache.CacheType.User);
-			Cache.Instance.Invalidate(Cache.CacheType.ActiveUser);
 			return true;
 		}
 	}
