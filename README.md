@@ -6,6 +6,12 @@ A WPF Application that simulates multiple roles in a supermarket: administrator 
 
 ## Screenshots
 
+![Menu](assets/menu.png)
+![Products](assets/products.png)
+![Products actions](assets/products-actions.png)
+![Receipts](assets/receipts.png)
+![Statistics](assets/statistics.png)
+
 ## Features
 
 - 2 roles: admin and cashier
